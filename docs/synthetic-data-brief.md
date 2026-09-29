@@ -9,6 +9,9 @@ The rules for the fake data behind Retention Copilot. The aim is data a churn mo
 - An Indian general insurer selling Motor, Health, Life, Home and Travel policies.
 - Cutoff date: 2026-06-30. Every event in every table happens on or before the cutoff. The only things after the cutoff are policy cancellations in the next 90 days, 2026-07-01 to 2026-09-28. Those are the churn outcomes.
 - History runs from 2026-01-01 to the cutoff, six months, so daily metrics have about 180 days.
+- Payment history starts earlier, on 2025-10-01, so payments reach about 60,000 rows.
+- Claims are about 3 to 4 percent of policies per month, which gives about 1,500 over the six months.
+- Claim amounts never exceed the policy cover and are capped per product. Satisfaction scores are whole numbers from 1 to 5.
 - Customers who joined before 2026 have a customer since date as early as 2016.
 
 ## Row counts
