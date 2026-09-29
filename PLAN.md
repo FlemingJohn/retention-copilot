@@ -105,7 +105,7 @@ Impact and Activity are the first screens to cut if time runs short.
 
 ## Account
 
-- The event account is on AWS, region Jakarta, Enterprise edition.
+- The event account is on AWS, region AWS_AP_SOUTHEAST_7 (Thailand), Enterprise edition.
 - Cortex functions, Claude models, embeddings and Cortex Search work there.
 - External access integrations are blocked on trial accounts. The project does not need them.
 - Cross-region inference is already set to any region.
