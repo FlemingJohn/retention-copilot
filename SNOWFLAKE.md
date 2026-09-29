@@ -123,7 +123,7 @@ Snowflake's built-in classifier does not work on our accounts. It fails with "CL
 - The Snowflake ML Python wrapper failed because its hidden helper procedure lacked pandas.
 - Plain scikit-learn inside a stored procedure trained a logistic regression (84.5% accuracy on 2,000 rows), saved it to a stage, and a Python function scored rows with it. This is the path we use.
 
-**Assessment.** CoCo's view is that the classification class has no working version deployed for the Jakarta region, so it cannot be fixed from our side. That is a reasonable guess but it is **not confirmed**. We have not compared against another region or seen Snowflake confirm it. Whether `TOP_INSIGHTS` is affected is also unconfirmed, because CoCo's call returned "Unknown user-defined table function", which may be a syntax difference. The next step is a Snowflake Support case quoting the error and the fact that forecast and anomaly detection work.
+**Assessment.** CoCo's view is that the classification class has no working version deployed for our region, AWS_AP_SOUTHEAST_7, which is Thailand and not Jakarta as this guide first said. Its reasoning is that forecast and anomaly detection work while classification alone fails, that no account setting controls this, and that the region is very new. CoCo rated its confidence at about 90 percent, which is too high for what is circumstantial evidence. Snowflake's docs list no region limits for classification, which points the other way. Treat it as a plausible guess that is **not confirmed**. We have not compared against another region or seen Snowflake confirm it. Whether `TOP_INSIGHTS` is affected is also unconfirmed, because CoCo's call returned "Unknown user-defined table function", which may be a syntax difference. The next step is a Snowflake Support case quoting the error and the fact that forecast and anomaly detection work.
 
 We use a Python stored procedure with scikit-learn instead. Status: **verified** on the event account, where a gradient boosting model trained inside Snowflake on 3,000 rows. Two lessons: put the packages in the procedure definition, and read rows with `collect()` because converting to pandas failed.
 
@@ -214,5 +214,5 @@ Command we use:
 | Fully qualified name | `DATABASE.SCHEMA.OBJECT` |
 | Target lag | How stale a dynamic table may be |
 | Serverless | Snowflake picks the computer, so you do not choose a warehouse |
-| Region | Where the account runs. Ours is AWS Jakarta |
+| Region | Where the account runs. Ours is AWS_AP_SOUTHEAST_7, which is Thailand |
 | Cross-region inference | Lets Cortex use a model hosted in another region. It is already on |
