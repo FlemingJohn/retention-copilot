@@ -1,72 +1,47 @@
 :root {
-  --color-background: #f6f7f9;
+  --color-background: #ffffff;
   --color-surface: #ffffff;
-  --color-text: #161b26;
-  --color-text-muted: #5a6376;
-  --color-border: #dfe3ea;
-  --color-accent: #0b5fd6;
-  --color-accent-soft: #e6efff;
-  --color-success: #12803c;
-  --color-success-soft: #e3f5ea;
-  --color-warning: #a15c00;
-  --color-warning-soft: #fff1d9;
-  --color-danger: #b3261e;
-  --color-danger-soft: #fde8e6;
+  --color-surface-tint: #f4f8fb;
+  --color-text: #0f2a3d;
+  --color-text-muted: #506a7d;
+  --color-border: #d6e3ec;
+  --color-brand: #29b5e8;
+  --color-brand-soft: #e3f3fb;
+  --color-accent: #11567f;
+  --color-accent-hover: #0d4566;
+  --color-on-accent: #ffffff;
+  --color-danger: #c4372f;
+  --color-danger-soft: #fbe9e7;
+  --color-warning: #9a5b00;
+  --color-warning-soft: #fff1dc;
+  --color-success: #1b7f5c;
+  --color-success-soft: #e2f4ec;
 
-  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: "Fraunces", Georgia, serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --font-body: "Source Sans 3", "Segoe UI", Helvetica, Arial, sans-serif;
 
-  --text-small: 0.85rem;
-  --text-base: 0.95rem;
-  --text-large: 1.25rem;
+  --text-small: 0.875rem;
+  --text-base: 1rem;
+  --text-large: 1.4rem;
   --text-title: 2rem;
+
+  --weight-regular: 400;
+  --weight-medium: 600;
+  --weight-bold: 700;
 
   --space-small: 8px;
   --space-medium: 16px;
   --space-large: 24px;
   --space-huge: 40px;
 
-  --radius-small: 6px;
-  --radius-large: 10px;
+  --radius-small: 8px;
+  --radius-medium: 12px;
+  --radius-large: 16px;
+  --radius-round: 999px;
+
+  --panel-width-open: 212px;
+  --panel-width-collapsed: 68px;
 
   color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --color-background: #0f1420;
-    --color-surface: #171d2b;
-    --color-text: #e8ebf2;
-    --color-text-muted: #9aa3b5;
-    --color-border: #2a3245;
-    --color-accent: #6ea3ff;
-    --color-accent-soft: #1c2a47;
-    --color-success: #5fd08a;
-    --color-success-soft: #14301f;
-    --color-warning: #f0b35a;
-    --color-warning-soft: #382a10;
-    --color-danger: #ff8f86;
-    --color-danger-soft: #3a1a18;
-    color-scheme: dark;
-  }
-}
-
-:root[data-theme="dark"] {
-  --color-background: #0f1420;
-  --color-surface: #171d2b;
-  --color-text: #e8ebf2;
-  --color-text-muted: #9aa3b5;
-  --color-border: #2a3245;
-  --color-accent: #6ea3ff;
-  --color-accent-soft: #1c2a47;
-  --color-success: #5fd08a;
-  --color-success-soft: #14301f;
-  --color-warning: #f0b35a;
-  --color-warning-soft: #382a10;
-  --color-danger: #ff8f86;
-  --color-danger-soft: #3a1a18;
-  color-scheme: dark;
 }
 
 body {
@@ -74,5 +49,6 @@ body {
   color: var(--color-text);
   font-family: var(--font-body);
   font-size: var(--text-base);
+  font-weight: var(--weight-regular);
   line-height: 1.6;
 }
