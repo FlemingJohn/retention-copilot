@@ -52,7 +52,30 @@ Each step has its own folder under `snowflake/`, in this order.
 5. `churn-model` trains a classifier and stores a score and the main drivers for each customer.
 6. `next-best-action` picks an action from rules, then a Claude model writes the reason and the draft message.
 7. `semantic-layer` holds the semantic view for Cortex Analyst and the Cortex Search service on transcripts.
-8. `governance` holds masking policies on personal data and the role-based views the app reads.
+8. `agent` holds the Cortex Agent that turns a question into a recommended action. Its tools are Cortex Analyst, Cortex Search and a custom procedure that records an approved action.
+9. `automation` holds the stream on new transcripts and the triggered task that enriches them without a person starting it.
+10. `governance` holds masking policies on personal data, the role-based views the app reads, and the confidence checks that make the agent fail safely.
+
+The customer question and the recommended action happen in one experience: an answer lists customers and each row offers the action.
+
+---
+
+## CoCo usage
+
+Every phase is done through CoCo CLI, and evidence of each is saved in `docs/coco-evidence/`.
+
+| Phase | What CoCo does | Evidence |
+|---|---|---|
+| Planning | Explores the data, frames the problem, drafts the data model and workflow | Session log and the resulting design notes |
+| Development | Builds the pipelines, semantic view, model, agent and application code | Session logs and commits |
+| Execution | Runs the full solution, including the scheduled task | Task run history and session log |
+| Testing | Validates outputs, accuracy, errors and edge cases before the demo | Test session log and results |
+
+Extras, in order of value:
+
+1. A reusable CoCo skill, documented so other teams can use it. Skills are Markdown files with a name and description, kept in `.cortex/skills/` and shared with `cortex skill add` or published to a stage.
+2. An MCP connector, for example Slack or Jira, so an approved action posts to another tool. Servers are added with `cortex mcp add`.
+3. Scheduled runs through a triggered Snowflake task.
 
 ---
 
