@@ -81,15 +81,25 @@ Extras, in order of value:
 
 ## Screens
 
-The app lives in `src/`.
+The app lives in `src/`. The look is white and Snowflake blue, light only, rounded shapes, one typeface (Source Sans 3), line icons, and a side panel that collapses to an icon rail.
 
-- Customer search.
-- Customer profile with every signal in one place.
-- Churn risk with the drivers behind it.
-- Recommended action and draft message, with an approve button.
-- A question box that answers in plain language and shows the query it ran.
+The top bar holds the product name, one box to ask or search, and the role badge.
+
+The side panel holds five sections, in the order a manager works:
+
+1. Overview: who to call first. Summary tiles, risk by segment and a ranked list.
+2. Customers: search, then the full profile with risk drivers, the recommended action, the draft message and the call timeline.
+3. Ask: a question to the agent. The answer can include a chart and a table, and each row can apply an action.
+4. Impact: retention with and without the copilot, uplift and revenue saved.
+5. Activity: the scheduled task, the guardrail log and the approved actions.
+
+Confidence is shown on every recommendation, and a low value sends the action to review.
 
 Server routes live in `src/app/api/`: `customers`, `recommendations` and `questions`.
+
+Agent tools in priority order: Cortex Analyst, Cortex Search, the record-action procedure, data to chart, and code execution last.
+
+Impact and Activity are the first screens to cut if time runs short.
 
 ---
 
