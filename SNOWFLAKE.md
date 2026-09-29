@@ -129,7 +129,23 @@ A rule that hides a column from roles that should not see it. An email can show 
 A view that only shows what a role is allowed to see. The app reads these views, never the raw tables.
 
 ### Guardrails
-Snowflake can watch what AI tools read and block hidden instructions inside text. This matters because call transcripts are text an attacker could write. It needs Enterprise edition, which the accounts have. How to switch it on is **not confirmed**.
+Snowflake can watch what AI tools read and block hidden instructions inside text. This matters because call transcripts are text an attacker could write.
+
+- **What it covers:** prompt injection, jailbreak attempts and new attack patterns. It applies to CoCo, Cortex Agents and Snowflake CoWork. It does not cover a plain `COMPLETE` call or the REST chat calls, so the protection reaches our app through the agent.
+- **Needs:** Enterprise edition and cross-region inference, and both accounts have them.
+- **Switch on**, as `ACCOUNTADMIN`. The setting is the account parameter `AI_SETTINGS`, which is empty on the event account, so guardrails are off:
+
+      ALTER ACCOUNT SET AI_SETTINGS = $$
+        guardrails:
+          advanced_prompt_injection:
+            - enabled: true
+      $$;
+
+- **Switch off:** `ALTER ACCOUNT UNSET AI_SETTINGS;`
+- **Log:** `SNOWFLAKE.ACCOUNT_USAGE.CORTEX_AI_GUARDRAILS_USAGE_HISTORY`. Rows with `GUARDRAILS_SIGNAL = TRUE` are flagged requests. The view can be read on the event account and is empty for now. Account usage views can lag behind real time.
+- **Cost:** credits for the tokens scanned. Some harmless prompts may be flagged.
+
+Status: the setting and the log view are **verified** to exist. Turning it on has **not been tried**.
 
 ---
 
@@ -145,7 +161,9 @@ Snowflake can watch what AI tools read and block hidden instructions inside text
 
 All calls go to our own Snowflake address, so the Claude models run under Snowflake and bill in Snowflake credits. No separate Anthropic account is involved.
 
-Every call sends the token as `Authorization: Bearer <token>` with the header `X-Snowflake-Authorization-Token-Type: PROGRAMMATIC_ACCESS_TOKEN`. The token stays in the Next.js server routes and is never sent to the browser.
+Every call sends the token as `Authorization: Bearer <token>` with the header `X-Snowflake-Authorization-Token-Type: PROGRAMMATIC_ACCESS_TOKEN`. The Messages API also asks for `anthropic-version: 2023-06-01`. Our test worked without it, but the docs list it as required, so the app will send it. The token stays in the Next.js server routes and is never sent to the browser.
+
+The role the app uses must hold `SNOWFLAKE.CORTEX_USER` or the narrower `SNOWFLAKE.CORTEX_REST_API_USER`. We give the app the narrower one. Chat calls support streaming, tool calling and structured JSON output. Limits per minute apply and return HTTP 429 when exceeded, so the app retries with a growing delay. Usage can be read from `SNOWFLAKE.ACCOUNT_USAGE.CORTEX_REST_API_USAGE_HISTORY`, which already shows our test call.
 
 Task history is readable with SQL, which the Activity screen needs. Status: **verified**.
 
