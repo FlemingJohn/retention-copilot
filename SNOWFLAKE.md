@@ -96,20 +96,24 @@ A job that runs SQL on a schedule or when something happens. A triggered task ca
 A description of your tables in business words: what a customer is, what churn risk means, how tables join. Status: creating one is **verified**.
 
 ### Cortex Analyst
-Turns a question such as "which gold customers mentioned a rival?" into SQL, using a semantic view. It is enabled on both accounts. Status: **untested** on the event account.
+Turns a question such as "which gold customers mentioned a rival?" into SQL, using a semantic view. Status: **verified** on the event account. A REST call with our token returned the SQL for "What is the average age?" and a note of how it read the question.
 
 ### Cortex Search
 Finds text by meaning, not just matching words. We use it over call transcripts to answer "why is this customer unhappy?". Status: creating a search service is **verified** on the event account.
 
 ### Cortex Agent
-An AI that decides which tool to call. Our agent has these tools, in priority order: Cortex Analyst, Cortex Search, a procedure that records an approved action, data to chart, and code execution last. Threads keep the conversation between questions. Status: **from the docs**.
+An AI that decides which tool to call. Our agent has these tools, in priority order: Cortex Analyst, Cortex Search, a procedure that records an approved action, data to chart, and code execution last. Threads keep the conversation between questions. Status: creating an agent is **verified** on the event account. The syntax is `CREATE AGENT name FROM SPECIFICATION $$ ...yaml... $$` with no equals sign.
 
 ---
 
 ## 7. Prediction
 
-### Snowflake ML
-Trains a model inside Snowflake, for example to predict which customers will leave, and scores new customers. The built-in classifier gave the error "CLASSIFICATION must have an active version defined" on the old account. **Untested** on the event account. The fallback is Snowpark ML.
+### Churn model
+Trains a model on past customers, for example to predict which ones will leave, and scores current customers.
+
+Snowflake's built-in classifier does not work on our accounts. It fails with "CLASSIFICATION must have an active version defined", on both accounts and with clean data. We do not use it.
+
+We use a Python stored procedure with scikit-learn instead. Status: **verified** on the event account, where a gradient boosting model trained inside Snowflake on 3,000 rows. Two lessons: put the packages in the procedure definition, and read rows with `collect()` because converting to pandas failed.
 
 ### Feature and score
 A feature is one fact about a customer used by the model, such as missed payments. The score is the probability that the customer leaves. We also store the top features behind each score, so the screen can say why.
@@ -133,12 +137,17 @@ Snowflake can watch what AI tools read and block hidden instructions inside text
 
 | Need | Interface | Status |
 |---|---|---|
-| Read tables and views | SQL API, `/api/v2/statements` | From the docs |
-| Chat with a model | Cortex REST API, `/api/v2/cortex/v1/chat/completions` | From the docs |
-| Ask about data | Cortex Analyst, `POST /api/v2/cortex/analyst/message` | From the docs |
+| Read tables and views | SQL API, `/api/v2/statements` | Verified |
+| Chat with Claude | Messages API, `/api/v2/cortex/v1/messages` | Verified |
+| Chat with any model | Chat completions, `/api/v2/cortex/v1/chat/completions` | Reached and authenticated. Use `max_completion_tokens`, since `max_tokens` is deprecated |
+| Ask about data | Cortex Analyst, `POST /api/v2/cortex/analyst/message` | Verified |
 | Run the agent | The agent `run` endpoint | From the docs |
 
-All calls need a token. The token stays in the Next.js server routes and is never sent to the browser. It is not yet confirmed that the SQL API accepts our token type. The fallback is the Node.js driver.
+All calls go to our own Snowflake address, so the Claude models run under Snowflake and bill in Snowflake credits. No separate Anthropic account is involved.
+
+Every call sends the token as `Authorization: Bearer <token>` with the header `X-Snowflake-Authorization-Token-Type: PROGRAMMATIC_ACCESS_TOKEN`. The token stays in the Next.js server routes and is never sent to the browser.
+
+Task history is readable with SQL, which the Activity screen needs. Status: **verified**.
 
 ---
 
