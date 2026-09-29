@@ -1,0 +1,14 @@
+grant all privileges on database RETENTION_COPILOT to role RETENTION_COPILOT_ADMIN;
+grant all privileges on schema RETENTION_COPILOT.RAW to role RETENTION_COPILOT_ADMIN;
+grant all privileges on schema RETENTION_COPILOT.ANALYTICS to role RETENTION_COPILOT_ADMIN;
+grant all privileges on schema RETENTION_COPILOT.APP to role RETENTION_COPILOT_ADMIN;
+grant all privileges on all tables in schema RETENTION_COPILOT.RAW to role RETENTION_COPILOT_ADMIN;
+grant all privileges on all tables in schema RETENTION_COPILOT.ANALYTICS to role RETENTION_COPILOT_ADMIN;
+grant all privileges on all tables in schema RETENTION_COPILOT.APP to role RETENTION_COPILOT_ADMIN;
+grant all privileges on future tables in schema RETENTION_COPILOT.RAW to role RETENTION_COPILOT_ADMIN;
+grant all privileges on future tables in schema RETENTION_COPILOT.ANALYTICS to role RETENTION_COPILOT_ADMIN;
+grant all privileges on future tables in schema RETENTION_COPILOT.APP to role RETENTION_COPILOT_ADMIN;
+grant all privileges on future views in schema RETENTION_COPILOT.RAW to role RETENTION_COPILOT_ADMIN;
+grant all privileges on future views in schema RETENTION_COPILOT.ANALYTICS to role RETENTION_COPILOT_ADMIN;
+grant all privileges on future views in schema RETENTION_COPILOT.APP to role RETENTION_COPILOT_ADMIN;
+grant usage, operate on warehouse RETENTION_COPILOT_WH to role RETENTION_COPILOT_ADMIN;
