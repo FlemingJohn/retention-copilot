@@ -115,7 +115,15 @@ Snowflake's built-in classifier does not work on our accounts. It fails with "CL
 
 `CREATE SNOWFLAKE.ML.CLASSIFICATION` is itself the training step, so there is no separate trained model to supply. We tried a clean schema, evaluation off, skipping bad rows, a boolean label and the schema privilege grant. The docs recommend a Medium Snowpark-optimized warehouse, but Snowflake refuses to create one on the event account, because only Gen2 warehouses are allowed. So that setup could not be tested. Even the docs' own worked example, copied exactly and run as a non-admin role with the schema set first, fails with the same error on the event account. No documentation page mentions the error.
 
-**Likely cause, found by asking CoCo and confirmed by hand:** `SHOW CLASSES IN SCHEMA SNOWFLAKE.ML` lists the four ML classes (`ANOMALY_DETECTION`, `CLASSIFICATION`, `FORECAST`, `TOP_INSIGHTS`) with the column `VERSION` set to `None` for every one. `SHOW VERSIONS IN CLASS SNOWFLAKE.ML.CLASSIFICATION` fails with "Insufficient privileges to operate on class 'CLASSIFICATION'. Provider share does not have sufficient privileges." That matches the error text: the class has no active version on our account. It looks like a provisioning problem on Snowflake's side, so we cannot fix it ourselves. It is a good case to raise with Snowflake Support, quoting both messages.
+**What CoCo found when asked to build a simple classifier** (transcript in `docs/coco-evidence/`):
+
+- `CREATE SNOWFLAKE.ML.FORECAST` and `CREATE SNOWFLAKE.ML.ANOMALY_DETECTION` both work on the event account. Only `CLASSIFICATION` fails, with the same error under `ACCOUNTADMIN` and `SYSADMIN`.
+- `SHOW CLASSES IN SCHEMA SNOWFLAKE.ML` lists all four classes with `VERSION = None`, and the old trial account shows the same. Since forecast and anomaly detection work anyway, `None` is just how the list displays them. It is not the cause.
+- `SHOW VERSIONS IN CLASS ...` fails with "Provider share does not have sufficient privileges" for every class, so it is not something users can run.
+- The Snowflake ML Python wrapper failed because its hidden helper procedure lacked pandas.
+- Plain scikit-learn inside a stored procedure trained a logistic regression (84.5% accuracy on 2,000 rows), saved it to a stage, and a Python function scored rows with it. This is the path we use.
+
+**Assessment.** CoCo's view is that the classification class has no working version deployed for the Jakarta region, so it cannot be fixed from our side. That is a reasonable guess but it is **not confirmed**. We have not compared against another region or seen Snowflake confirm it. Whether `TOP_INSIGHTS` is affected is also unconfirmed, because CoCo's call returned "Unknown user-defined table function", which may be a syntax difference. The next step is a Snowflake Support case quoting the error and the fact that forecast and anomaly detection work.
 
 We use a Python stored procedure with scikit-learn instead. Status: **verified** on the event account, where a gradient boosting model trained inside Snowflake on 3,000 rows. Two lessons: put the packages in the procedure definition, and read rows with `collect()` because converting to pandas failed.
 
