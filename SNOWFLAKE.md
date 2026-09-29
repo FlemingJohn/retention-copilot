@@ -113,6 +113,8 @@ Trains a model on past customers, for example to predict which ones will leave, 
 
 Snowflake's built-in classifier does not work on our accounts. It fails with "CLASSIFICATION must have an active version defined", on both accounts and with clean data. We do not use it.
 
+`CREATE SNOWFLAKE.ML.CLASSIFICATION` is itself the training step, so there is no separate trained model to supply. We tried a clean schema, evaluation off, skipping bad rows, a boolean label and the schema privilege grant. The docs recommend a Medium Snowpark-optimized warehouse, but Snowflake refuses to create one on the event account, because only Gen2 warehouses are allowed. So that setup could not be tested. The cause is unknown and no documentation page mentions the error.
+
 We use a Python stored procedure with scikit-learn instead. Status: **verified** on the event account, where a gradient boosting model trained inside Snowflake on 3,000 rows. Two lessons: put the packages in the procedure definition, and read rows with `collect()` because converting to pandas failed.
 
 ### Feature and score
