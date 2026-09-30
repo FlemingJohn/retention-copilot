@@ -1,0 +1,14 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.back {
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+}
+
+.detail {
+  color: var(--color-text-muted);
+}
