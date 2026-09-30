@@ -1,0 +1,4 @@
+use role ACCOUNTADMIN;
+use warehouse RETENTION_COPILOT_WH;
+
+create or replace stage RETENTION_COPILOT.ANALYTICS.MODEL_STAGE;
