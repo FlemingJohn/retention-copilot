@@ -1,0 +1,15 @@
+.form {
+  display: flex;
+  gap: 10px;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-round);
+  background: var(--color-surface);
+  font: inherit;
+  font-size: var(--text-small);
+}
