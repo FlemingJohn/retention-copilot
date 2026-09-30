@@ -1,0 +1,22 @@
+You are in the DEVELOPMENT and EXECUTION phase of a hackathon project called Retention Copilot. Your working directory is the project root. Read exactly one project file first: docs/synthetic-data-brief.md. Then work only in snowflake/synthetic-data. Do not read other project files. Do not run shell commands.
+
+Files 01 to 24 exist. GENERATOR.CALL_PLAN has 1,294 planned calls. RAW.CALL_TRANSCRIPTS holds a 20 call test batch written by the JavaScript procedure in 22_create_transcript_writer.sql, one call at a time. Use warehouse RETENTION_COPILOT_WH as ACCOUNTADMIN.
+
+Problems found in the test batch:
+1. The agent names a different insurance company in every call. Fix: every call is with the same company, Suraksha General Insurance. The agent introduces themselves with that name.
+2. Rupee amounts appear as odd numbers such as "Rs 54,831 and 15 paise". Fix: pass amounts rounded to whole rupees and tell the model to say them as whole rupees in the Indian style, for example Rs 54,831.
+3. Policy numbers in the calls do not match the tables. Fix: pass the real POLICY_ID of the relevant policy and tell the model that when a policy number comes up it must use exactly that id, and that customers often do not remember it and the agent then reads it out.
+4. Every call must be a customer calling in. No agent-initiated calls.
+5. The writer loops over the plan one call at a time, which is far too slow for 1,000 calls.
+
+Task:
+A. Rewrite 22_create_transcript_writer.sql as a SET BASED stored procedure in SQL scripting (not JavaScript, not a cursor loop): it takes a first plan id and a last plan id, and in a single INSERT ... SELECT builds the prompt for every planned call in that range and calls COMPLETE once per row so that Snowflake runs the calls in parallel. Use claude-haiku-4-5, the message list form with an options object with max_tokens 700, and keep the token usage results. Store the response objects for the range first in a table GENERATOR.TRANSCRIPT_DRAFTS (create it in a new file 22a is not allowed, so put its creation in file 21_create_usage_table.sql renamed to 21_create_working_tables.sql if you need it; keep one job per file and rename cleanly), then insert into RAW.CALL_TRANSCRIPTS and GENERATOR.TRANSCRIPT_USAGE from that table. Skip plan ids that already have a transcript so a rerun never duplicates. Keep the same rules as before: the prompt has true facts (first name, city, the relevant policy product, monthly premium, real recent claim, number of late payments), only the TONE sentence derived from mood, never the churn outcome, cancellation dates or the mood number; the output is dialogue only in Agent: and Customer: lines, 120 to 350 words; the transcript must never contain the words churn, mood or score.
+B. Update 20_create_call_plan.sql only if you need extra plan columns for the fixes. Do not change the competitor logic: mention chance rises with mood, from about 3 percent at low mood to about 20 percent at high mood.
+C. Clear RAW.CALL_TRANSCRIPTS, GENERATOR.TRANSCRIPT_USAGE and any drafts table, then write plan ids 1 to 60 with the new procedure, in ONE call for the whole range 1 to 60, and record how many seconds it took using timestamps before and after. Do not write more than 60 in this run. Update 23_write_test_batch.sql to call the new procedure for 1 to 60.
+D. Update 24_check_transcripts.sql so it stays runnable: it must run as a whole file. It must include the count of transcripts, word counts, token totals, the mood mix, topic and style counts, the count of transcripts mentioning the company name Suraksha General Insurance (should be nearly all), the count containing a rival insurer name matched with word boundaries (LIC only as a whole word), the count containing the words churn, mood or score (must be 0), the count containing the text paise (should be 0), and three full samples from different mood groups.
+
+Report the elapsed seconds for the 60 calls and the projected time for 1,000, and the token totals.
+
+Coding rules for every file, strict: no comments of any kind, one job per file, short files, plain names, upper case object names, lower case keywords. Make sure each saved file runs exactly as saved. Do not change account level settings. Do not touch other schemas.
+
+Final answer, short: files written or changed, whether each ran as saved, the check output, the timing, and an honest note on the quality of the three samples, in particular whether the company name, amounts and policy ids are now consistent. Report anything that failed.
