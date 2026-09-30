@@ -1,0 +1,3 @@
+create stream if not exists RETENTION_COPILOT.RAW.CALL_TRANSCRIPT_STREAM
+  on table RETENTION_COPILOT.RAW.CALL_TRANSCRIPTS
+  append_only = true;
