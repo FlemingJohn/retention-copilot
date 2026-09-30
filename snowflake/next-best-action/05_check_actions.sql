@@ -1,0 +1,49 @@
+select count(*) as ROW_COUNT
+from RETENTION_COPILOT.ANALYTICS.RECOMMENDED_ACTIONS;
+
+select ACTION_TYPE, count(*) as ACTION_COUNT
+from RETENTION_COPILOT.ANALYTICS.RECOMMENDED_ACTIONS
+group by ACTION_TYPE
+order by ACTION_COUNT desc;
+
+select CONFIDENCE, STATUS, count(*) as ROW_COUNT
+from RETENTION_COPILOT.ANALYTICS.RECOMMENDED_ACTIONS
+group by CONFIDENCE, STATUS
+order by CONFIDENCE, STATUS;
+
+select DRAFT_SOURCE, count(*) as ROW_COUNT
+from RETENTION_COPILOT.ANALYTICS.RECOMMENDED_ACTIONS
+group by DRAFT_SOURCE;
+
+select count(*) as FORBIDDEN_WORD_DRAFTS
+from RETENTION_COPILOT.ANALYTICS.RECOMMENDED_ACTIONS
+where regexp_like(DRAFT_MESSAGE, '.*(\\bchurn\\b|\\bscore\\b|\\bprobability\\b|\\brisk\\b|\\balgorithm\\b|\\bmodel\\b|\\bai\\b).*', 'i');
+
+select
+    min(length(DRAFT_MESSAGE))  as MIN_DRAFT_LENGTH,
+    round(avg(length(DRAFT_MESSAGE))) as AVG_DRAFT_LENGTH,
+    max(length(DRAFT_MESSAGE))  as MAX_DRAFT_LENGTH
+from RETENTION_COPILOT.ANALYTICS.RECOMMENDED_ACTIONS;
+
+select count(*) as DUPLICATE_CUSTOMER_IDS
+from (
+    select CUSTOMER_ID
+    from RETENTION_COPILOT.ANALYTICS.RECOMMENDED_ACTIONS
+    group by CUSTOMER_ID
+    having count(*) > 1
+);
+
+select count(*) as EMPTY_REQUIRED_FIELDS
+from RETENTION_COPILOT.ANALYTICS.RECOMMENDED_ACTIONS
+where CHANNEL is null or trim(CHANNEL) = ''
+   or ACTION_TYPE is null or trim(ACTION_TYPE) = ''
+   or REASON is null or trim(REASON) = '';
+
+select round(sum(REVENUE_AT_RISK), 2) as TOTAL_REVENUE_AT_RISK
+from RETENTION_COPILOT.ANALYTICS.RECOMMENDED_ACTIONS;
+
+select *
+from RETENTION_COPILOT.ANALYTICS.RECOMMENDED_ACTIONS
+qualify row_number() over (partition by ACTION_TYPE order by PRIORITY_RANK) = 1
+order by PRIORITY_RANK
+limit 4;
