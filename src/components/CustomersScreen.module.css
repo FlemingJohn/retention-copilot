@@ -1,0 +1,17 @@
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-medium);
+}
+
+.search {
+  flex: 1;
+  min-width: 220px;
+  max-width: 420px;
+  padding: 9px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-round);
+  background: var(--color-surface);
+  font-size: var(--text-small);
+}
