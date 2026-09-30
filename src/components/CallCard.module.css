@@ -1,0 +1,38 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-small);
+  padding: var(--space-medium);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+}
+
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-small);
+  font-size: var(--text-small);
+}
+
+.topic {
+  color: var(--color-text-muted);
+}
+
+.reason {
+  font-size: var(--text-small);
+}
+
+.details summary {
+  color: var(--color-accent);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+}
+
+.transcript {
+  margin-top: var(--space-small);
+  white-space: pre-wrap;
+  font-size: var(--text-small);
+}
