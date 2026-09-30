@@ -1,0 +1,35 @@
+.button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  padding: 9px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.button:hover {
+  background: var(--color-brand-soft);
+  color: var(--color-accent);
+}
+
+.button svg {
+  transition: transform 0.2s ease;
+}
+
+.collapsed svg {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 640px) {
+  .button {
+    display: none;
+  }
+}
