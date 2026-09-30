@@ -1,0 +1,6 @@
+.form {
+  position: sticky;
+  bottom: 0;
+  padding: var(--space-medium) 0;
+  background: var(--color-background);
+}
