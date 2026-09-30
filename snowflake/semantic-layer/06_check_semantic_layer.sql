@@ -1,0 +1,46 @@
+select count(*) as CUSTOMER_OVERVIEW_ROW_COUNT from RETENTION_COPILOT.APP.CUSTOMER_OVERVIEW;
+
+select count(*) as CALL_OVERVIEW_ROW_COUNT from RETENTION_COPILOT.APP.CALL_OVERVIEW;
+
+select TABLE_NAME, COLUMN_NAME
+from RETENTION_COPILOT.INFORMATION_SCHEMA.COLUMNS
+where TABLE_SCHEMA = 'APP'
+  and TABLE_NAME in ('CUSTOMER_OVERVIEW', 'CALL_OVERVIEW')
+  and COLUMN_NAME in ('LAST_NAME', 'EMAIL', 'PHONE');
+
+show semantic views in schema RETENTION_COPILOT.APP;
+
+describe semantic view RETENTION_COPILOT.APP.CHURN_SEMANTIC_VIEW;
+
+select * from semantic_view(
+  RETENTION_COPILOT.APP.CHURN_SEMANTIC_VIEW
+  metrics (CUSTOMER_OVERVIEW.CUSTOMER_COUNT)
+  dimensions (CUSTOMER_OVERVIEW.RISK_TIER)
+);
+
+select * from semantic_view(
+  RETENTION_COPILOT.APP.CHURN_SEMANTIC_VIEW
+  metrics (CUSTOMER_OVERVIEW.TOTAL_REVENUE_AT_RISK)
+  dimensions (CUSTOMER_OVERVIEW.ACTION_TYPE)
+);
+
+select * from semantic_view(
+  RETENTION_COPILOT.APP.CHURN_SEMANTIC_VIEW
+  metrics (CALL_OVERVIEW.CALLS_MENTIONING_RIVAL)
+  dimensions (CALL_OVERVIEW.COMPETITOR_MENTIONED)
+);
+
+with RAW_RESULT as (
+  select parse_json(snowflake.cortex.search_preview(
+    'RETENTION_COPILOT.APP.CALL_SEARCH',
+    '{"query": "customer says another insurer is cheaper", "columns": ["TRANSCRIPT_ID", "MAIN_TOPIC", "COMPETITOR_MENTIONED"], "limit": 3}'
+  )) as RESULT
+)
+select
+  ITEM.VALUE:TRANSCRIPT_ID::varchar as TRANSCRIPT_ID,
+  ITEM.VALUE:MAIN_TOPIC::varchar as MAIN_TOPIC,
+  ITEM.VALUE:COMPETITOR_MENTIONED::varchar as COMPETITOR_MENTIONED
+from RAW_RESULT,
+lateral flatten(input => RESULT:results) ITEM;
+
+show grants to role RETENTION_COPILOT_READER
