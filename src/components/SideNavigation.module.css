@@ -1,0 +1,35 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: none;
+  width: var(--panel-width-open);
+  padding: 12px 10px;
+  background: var(--color-surface-tint);
+  border-right: 1px solid var(--color-border);
+  transition: width 0.2s ease;
+}
+
+.collapsed {
+  width: var(--panel-width-collapsed);
+}
+
+.collapsed :global(span) {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .panel,
+  .collapsed {
+    flex-direction: row;
+    width: 100%;
+    overflow-x: auto;
+    padding: 8px;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .collapsed :global(span) {
+    display: inline;
+  }
+}
