@@ -1,0 +1,22 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--space-medium);
+  background: var(--color-surface-tint);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+}
+
+.label {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.text {
+  white-space: pre-wrap;
+  font-size: var(--text-small);
+}
