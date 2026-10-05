@@ -28,7 +28,8 @@ grant select on table RETENTION_COPILOT.RAW.CUSTOMERS to role MASKING_TEST_ROLE;
 
 grant usage on warehouse RETENTION_COPILOT_WH to role MASKING_TEST_ROLE;
 
-grant role MASKING_TEST_ROLE to user FLEMINGJOHN21;
+set grant_test_role = 'grant role MASKING_TEST_ROLE to user ' || current_user();
+execute immediate $grant_test_role;
 
 use role MASKING_TEST_ROLE;
 
