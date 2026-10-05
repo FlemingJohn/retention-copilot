@@ -120,6 +120,12 @@ Every Snowflake step was authored and run through **Cortex Code (CoCo) CLI**:
 
 The steps CoCo ran, in order: setup, synthetic data, transcript enrichment, customer profile, churn model, next best action, semantic layer, agent, automation, governance.
 
+### A reusable CoCo skill
+
+[.cortex/skills/snowflake-step-builder](.cortex/skills/snowflake-step-builder/SKILL.md) turns the routine that kept those ten steps reliable into a skill any team can reuse. It covers reading one brief, numbered SQL files, describing tables before use, running in order, a check file that can fail, keeping personal data out of app-readable objects, and reporting only what was verified.
+
+CoCo finds it automatically when run from this folder (`cortex skill list` shows it under PROJECT). To share it, use `cortex skill publish` to a stage.
+
 The Next.js app was written by hand, outside CoCo.
 
 ---
