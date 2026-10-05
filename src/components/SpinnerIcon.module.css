@@ -1,0 +1,17 @@
+.spinner {
+  display: inline-flex;
+  color: var(--color-brand);
+  animation: turn 0.9s linear infinite;
+}
+
+@keyframes turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}
