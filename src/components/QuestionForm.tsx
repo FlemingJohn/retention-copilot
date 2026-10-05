@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import Button from '@/components/Button'
+import SendIcon from '@/components/SendIcon'
 import styles from '@/components/QuestionForm.module.css'
 
 export default function QuestionForm({
@@ -35,6 +36,7 @@ export default function QuestionForm({
         maxLength={500}
       />
       <Button type="submit" disabled={disabled}>
+        <SendIcon size={16} />
         Ask
       </Button>
     </form>
