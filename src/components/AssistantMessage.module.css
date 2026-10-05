@@ -1,0 +1,33 @@
+.message {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-medium);
+  align-self: stretch;
+  min-width: 0;
+  padding: var(--space-medium) var(--space-large);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
+  background: var(--color-surface);
+}
+
+.failed {
+  border-color: var(--color-danger);
+  background: var(--color-danger-soft);
+}
+
+.author {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-accent);
+  font-size: var(--text-small);
+  font-weight: var(--weight-bold);
+}
+
+.table summary {
+  margin-bottom: var(--space-small);
+  color: var(--color-accent);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+}
