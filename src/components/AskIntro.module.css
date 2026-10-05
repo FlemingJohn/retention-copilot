@@ -1,0 +1,23 @@
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-medium);
+  padding: var(--space-large);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
+  background: var(--color-surface-tint);
+}
+
+.mark {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 12px;
+  border-radius: var(--radius-round);
+  background: var(--color-brand-soft);
+  color: var(--color-accent);
+}
+
+.note {
+  max-width: 60ch;
+  color: var(--color-text-muted);
+}
