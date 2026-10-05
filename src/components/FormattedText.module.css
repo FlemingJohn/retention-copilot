@@ -1,0 +1,16 @@
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-small);
+  font-size: var(--text-base);
+  line-height: 1.55;
+}
+
+.text ul,
+.text ol {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding-left: 22px;
+}
