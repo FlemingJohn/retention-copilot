@@ -1,6 +1,21 @@
-.form {
+.screen {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-large);
+}
+
+.conversation {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding-bottom: var(--space-large);
+}
+
+.composer {
   position: sticky;
   bottom: 0;
+  margin-top: auto;
   padding: var(--space-medium) 0;
   background: var(--color-background);
 }
