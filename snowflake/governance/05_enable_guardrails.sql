@@ -4,4 +4,4 @@ alter account set AI_SETTINGS = $$
       - enabled: true
 $$;
 
-alter account unset AI_SETTINGS;
+show parameters like 'AI_SETTINGS' in account;
