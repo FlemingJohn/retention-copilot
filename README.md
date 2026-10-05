@@ -105,7 +105,7 @@ Three rules shape the design:
 | **Resource monitor** | Caps spend at 100 credits and suspends the warehouse at the limit. |
 | **Cortex AI Guardrails** | Script written in `snowflake/governance`. Enabled just before the demo. |
 
-The churn model is honest about its limits. On synthetic data the chosen logistic regression scores a test AUC of about 0.66, and a model trained on shuffled labels scores about 0.49, which shows the model is not memorising or leaking.
+The churn model is honest about its limits. On synthetic data the chosen logistic regression scores a test AUC of 0.65 against 0.67 on training data, so it is not memorising. A model trained on shuffled labels scores 0.54, close to the 0.50 of a coin toss and within the noise of a test set with about 290 churners. Customers in the High tier churned at 39% in the test set against 15% in the Low tier, and the average predicted probability (20.7%) matches the actual churn rate (20.8%).
 
 ---
 
