@@ -1,0 +1,20 @@
+.panel {
+  font-size: var(--text-small);
+}
+
+.summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-muted);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+}
+
+.text {
+  margin-top: var(--space-small);
+  padding-left: var(--space-medium);
+  border-left: 3px solid var(--color-border);
+  color: var(--color-text-muted);
+  white-space: pre-wrap;
+}
