@@ -211,7 +211,7 @@ Notes:
 - Cortex AI functions and Cortex Agents must be available in your account region. Cross-region inference may need to be enabled.
 - Steps 3 and 5 use the most credits. Keep the warehouse at X-Small. The resource monitor stops spend at 100 credits.
 - `governance/01_create_app_service_user.sql` creates the token for the app. Copy it when it is shown, because Snowflake will not show it again.
-- `governance/05_write_guardrails_script.sql` is a script to run once, close to the demo. It is not part of the numbered run.
+- `governance/05_enable_guardrails.sql` turns on Cortex AI Guardrails for the whole account. It needs Enterprise Edition and cross-region inference. `07_disable_guardrails.sql` turns it off again. Run `06_check_governance.sql` last.
 - Run `governance/00_create_token_authentication_policy.sql` before `governance/01_create_app_service_user.sql`. It creates an authentication policy that does not enforce a network policy for programmatic access tokens. Without it Snowflake refuses the token with "Network policy is required".
 
 ---
