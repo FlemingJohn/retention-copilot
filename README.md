@@ -216,6 +216,16 @@ Notes:
 
 ---
 
+## Back up and restore the raw data
+
+The synthetic data is random, so generating it again gives different customers. Run [snowflake/backup](snowflake/backup) right after step 2 to keep the exact set.
+
+- `01` and `02` copy the six raw tables to Parquet files on a Snowflake stage. Download them with `snow stage copy @RETENTION_COPILOT.PUBLIC.BACKUP_STAGE <local folder> --recursive`.
+- `03` clones the RAW schema into `RETENTION_COPILOT_BACKUP` for a quick in-account copy.
+- `04` restores the tables from the stage. Upload the files back with `snow stage copy <local folder> @RETENTION_COPILOT.PUBLIC.BACKUP_STAGE --recursive`, create empty tables with the `synthetic-data` table files, then run `04`. It appends rows, so run it only on empty tables.
+
+---
+
 ## Repository map
 
 ```
