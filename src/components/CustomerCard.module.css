@@ -1,0 +1,39 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--space-medium);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.card:hover {
+  background: var(--color-surface-tint);
+  border-color: var(--color-brand);
+}
+
+.name {
+  color: var(--color-accent);
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+}
+
+.place {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.action {
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+}
+
+.numbers {
+  display: flex;
+  flex-direction: column;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
