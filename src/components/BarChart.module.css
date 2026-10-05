@@ -1,0 +1,41 @@
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-small);
+  max-width: 720px;
+  margin: 0;
+  padding: var(--space-medium);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+}
+
+.title {
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+}
+
+.label {
+  fill: var(--color-text);
+  font-size: 13px;
+}
+
+.value {
+  fill: var(--color-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.track {
+  fill: var(--color-brand-soft);
+}
+
+.bar {
+  fill: var(--color-brand);
+}
