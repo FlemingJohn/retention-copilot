@@ -206,7 +206,7 @@ Notes:
 - Steps 3 and 5 use the most credits. Keep the warehouse at X-Small. The resource monitor stops spend at 100 credits.
 - `governance/01_create_app_service_user.sql` creates the token for the app. Copy it when it is shown, because Snowflake will not show it again.
 - `governance/05_write_guardrails_script.sql` is a script to run once, close to the demo. It is not part of the numbered run.
-- Before running `governance/01_create_app_service_user.sql`, the account needs an authentication policy named `COCO_APP.PUBLIC.PAT_NO_NETWORK` that does not enforce a network policy for programmatic access tokens. Without it Snowflake refuses the token with "Network policy is required". This policy is created by hand and is not in the numbered files, so create it first or change the policy name in that file.
+- Run `governance/00_create_token_authentication_policy.sql` before `governance/01_create_app_service_user.sql`. It creates an authentication policy that does not enforce a network policy for programmatic access tokens. Without it Snowflake refuses the token with "Network policy is required".
 
 ---
 
