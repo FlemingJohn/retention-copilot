@@ -2,10 +2,10 @@
 
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useRef } from 'react'
+import AskIntro from '@/components/AskIntro'
 import ChatWindow from '@/components/ChatWindow'
 import PageHeader from '@/components/PageHeader'
 import QuestionForm from '@/components/QuestionForm'
-import SuggestedQuestions from '@/components/SuggestedQuestions'
 import { useAskAgent } from '@/hooks/useAskAgent'
 import styles from '@/components/AskScreen.module.css'
 
@@ -21,14 +21,17 @@ export default function AskScreen() {
     }
   }, [initialQuestion, ask])
 
+  const askQuestion = (question: string) => void ask(question)
+
   return (
-    <>
+    <div className={styles.screen}>
       <PageHeader title="Ask" subtitle="Ask in plain English. Answers come from your governed customer data." />
-      {entries.length === 0 ? <SuggestedQuestions onPick={(question) => void ask(question)} /> : null}
-      <ChatWindow entries={entries} isAnswering={isAnswering} />
-      <div className={styles.form}>
-        <QuestionForm disabled={isAnswering} onSubmit={(question) => void ask(question)} />
+      <div className={styles.conversation}>
+        {entries.length === 0 ? <AskIntro onPick={askQuestion} /> : <ChatWindow entries={entries} onAsk={askQuestion} />}
       </div>
-    </>
+      <div className={styles.composer}>
+        <QuestionForm disabled={isAnswering} onSubmit={askQuestion} />
+      </div>
+    </div>
   )
 }
